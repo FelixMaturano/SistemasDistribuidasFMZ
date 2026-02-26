@@ -1,0 +1,21 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.sis258.ejercicio_biblioteca;
+
+/**
+ *
+ * @author Felix
+ */
+public class ArmarioMadera extends Armario {
+
+    public ArmarioMadera(String codigo) {
+        super(codigo);
+    }
+
+    @Override
+    public String tipoArmario() {
+        return "Armario de Madera - Código: " + codigo;
+    }
+}
