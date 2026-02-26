@@ -2,27 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.sis258.ejercicio_biblioteca;
+package com.sis258.bibliotecaapp;
 
 /**
  *
  * @author Felix
  */
-import java.util.List;
-
 public class Periodico extends Publicacion {
 
     private String fecha;
-    private List<String> suplementos;
+    private String suplementos; // revista, crucigrama, afiche
 
-    public Periodico(String nombre, String fecha, List<String> suplementos) {
-        super(nombre);
+    public Periodico(int id, String nombre, String fecha, String suplementos) {
+        super(id, nombre);
         this.fecha = fecha;
         this.suplementos = suplementos;
     }
 
-    @Override
-    public String mostrarDetalle() {
-        return "Periodico: " + nombre + " - " + fecha + " - Suplementos: " + suplementos;
-    }
+    public String getFecha() { return fecha; }
+    public String getSuplementos() { return suplementos; }
 }

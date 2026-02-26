@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.sis258.ejercicio_biblioteca;
+package com.sis258.bibliotecaapp;
 
 /**
  *
@@ -10,15 +10,17 @@ package com.sis258.ejercicio_biblioteca;
  */
 public abstract class Publicacion {
 
+    protected int id;
     protected String nombre;
 
-    public Publicacion(String nombre) {
+    public Publicacion(int id, String nombre) {
+        this.id = id;
         this.nombre = nombre;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
+    public int getId() { return id; }
+    public String getNombre() { return nombre; }
 
-    public abstract String mostrarDetalle();
+    public void setId(int id) { this.id = id; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 }

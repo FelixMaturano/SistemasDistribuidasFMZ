@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.sis258.ejercicio_biblioteca;
+package com.sis258.bibliotecaapp;
 
 /**
  *
@@ -12,17 +12,16 @@ public class Revista extends Publicacion {
 
     private String mes;
     private int anio;
-    private String tipo;
+    private String tipo; // tecnica, moda, variedades
 
-    public Revista(String nombre, String mes, int anio, String tipo) {
-        super(nombre);
+    public Revista(int id, String nombre, String mes, int anio, String tipo) {
+        super(id, nombre);
         this.mes = mes;
         this.anio = anio;
         this.tipo = tipo;
     }
 
-    @Override
-    public String mostrarDetalle() {
-        return "Revista: " + nombre + " - " + mes + " - " + anio + " - " + tipo;
-    }
+    public String getMes() { return mes; }
+    public int getAnio() { return anio; }
+    public String getTipo() { return tipo; }
 }
