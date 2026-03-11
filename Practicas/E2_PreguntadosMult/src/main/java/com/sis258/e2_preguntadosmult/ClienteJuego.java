@@ -18,7 +18,7 @@ public class ClienteJuego {
         try {
             Scanner scn = new Scanner(System.in);
 
-            InetAddress ip = InetAddress.getByName("localhost");
+            InetAddress ip = InetAddress.getByName("10.105.136.224");
             Socket s = new Socket(ip, 5056);
 
             // Canales de comunicación con el servidor
