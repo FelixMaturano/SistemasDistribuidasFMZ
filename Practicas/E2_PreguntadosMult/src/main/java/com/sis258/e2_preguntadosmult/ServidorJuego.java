@@ -15,11 +15,11 @@ import java.util.*;
 public class ServidorJuego {
 
     static String[] preguntas = {
-        "¿Cuál es la capital de Francia?",
-        "¿Cuánto es 5 x 8?",
-        "¿En qué año llegó el hombre a la luna?",
-        "¿Cuál es el planeta más grande del sistema solar?",
-        "¿Cuántos continentes hay en el mundo?"
+        "Cual es la capital de Francia?",
+        "Cuanto es 5 x 8?",
+        "En que anio llego el hombre a la luna?",
+        "Cual es el planeta mas grande del sistema solar?",
+        "Cuantos continentes hay en el mundo?"
     };
 
     static String[] respuestas = {

@@ -18,8 +18,6 @@ public class ClienteJuego {
         try {
             Scanner scn = new Scanner(System.in);
 
-            // Conectarse al servidor, cambiar IP si es en red local
-            // En red local usar IP del compañero: 10.105.136.224
             InetAddress ip = InetAddress.getByName("localhost");
             Socket s = new Socket(ip, 5056);
 
@@ -29,8 +27,6 @@ public class ClienteJuego {
 
             System.out.println("Conectado al servidor de juego!");
 
-            // El cliente solo recibe y responde, no necesita hilo extra
-            // porque el juego es turno a turno: pregunta → respuesta
             while (true) {
                 // Recibe mensaje del servidor (pregunta, resultado o fin)
                 String mensaje = dis.readUTF();
