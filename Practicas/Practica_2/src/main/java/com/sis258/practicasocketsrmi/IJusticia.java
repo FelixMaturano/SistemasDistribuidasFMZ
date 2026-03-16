@@ -5,6 +5,7 @@
 package com.sis258.practicasocketsrmi;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 /**
  *
  * @author Ruta Binar
@@ -12,7 +13,8 @@ import java.rmi.Remote;
 public interface IJusticia extends Remote{
     
     // que metodos tiene 
-      RespuestaCuenta ConsultarCuentas(String ci, String nombres, String apellidos);
-      Boolean Congelar(Cuenta cuenta,Float monto);  
+      public RespuestaCuenta ConsultarCuentas(String ci, String nombres, String apellidos)throws RemoteException;
+      
+      boolean Congelar(Cuenta cuenta, Float monto)throws RemoteException;  
     
 }
