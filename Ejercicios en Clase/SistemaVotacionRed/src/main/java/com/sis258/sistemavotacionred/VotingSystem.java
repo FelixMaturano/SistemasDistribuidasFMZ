@@ -4,131 +4,144 @@ import org.jgroups.JChannel;
 import org.jgroups.Message;
 import org.jgroups.ReceiverAdapter;
 import org.jgroups.View;
+
 import java.io.*;
-import java.util.*;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.HashMap;
 
-/**
- * @author Ruta Binar
- */
 public class VotingSystem extends ReceiverAdapter {
+
+    JChannel channel; // Canal para el grupo de comunicación
+    private String user_name; // atributo para el usuario
     
-    private JChannel channel;
-    private String nombreNodo;
+    // Variables de estado para la votacion
+    private String current_question = null;
+    final List<String> options = new LinkedList<>(); 
+    final Map<String, Integer> vote_count = new HashMap<>();
+    private boolean has_voted = false;
 
-    private String preguntaActual = null;
-    private List<String> opciones = new ArrayList<>();
-    private Map<String, Integer> conteoVotos = new HashMap<>();
-    private boolean yaVote = false;
-
-    public VotingSystem(String nombreNodo) {
-        this.nombreNodo = nombreNodo;
+    public VotingSystem(String user_name) {
+        this.user_name = user_name;
     }
 
-    @Override
+    public void viewAccepted(View new_view) {
+        System.out.println("Vista del grupo actualizada: " + new_view);
+    }
+
     public void receive(Message msg) {
-        String texto = (String) msg.getObject();
+        String line = (String) msg.getObject();
 
-        if (texto.startsWith("PREGUNTA:")) {
-            String contenido = texto.substring(9);
-            String[] partes = contenido.split("\\|");
+        if (line.startsWith("PREGUNTA:")) {
+            String content = line.substring(9);
+            String[] parts = content.split("\\|");
 
-            preguntaActual = partes[0];
-            opciones.clear();
-            conteoVotos.clear();
-            yaVote = false;
+            current_question = parts[0];
+            options.clear();
+            vote_count.clear();
+            has_voted = false;
 
-            for (int i = 1; i < partes.length; i++) {
-                opciones.add(partes[i]);
-                conteoVotos.put(partes[i], 0);
+            for (int i = 1; i < parts.length; i++) {
+                options.add(parts[i]);
+                vote_count.put(parts[i], 0);
             }
 
             System.out.println("\n========== NUEVA VOTACION ==========");
-            System.out.println("Pregunta: " + preguntaActual);
-            for (int i = 0; i < opciones.size(); i++) {
-                System.out.println("  " + (i + 1) + ". " + opciones.get(i));
+            System.out.println("Pregunta: " + current_question);
+            for (int i = 0; i < options.size(); i++) {
+                System.out.println("  " + (i + 1) + ". " + options.get(i));
             }
             System.out.println("Escribe el numero de tu opcion para votar:");
             System.out.print("> ");
+            System.out.flush();
 
-        } else if (texto.startsWith("VOTO:")) {
-            String opcionVotada = texto.substring(5);
-            if (conteoVotos.containsKey(opcionVotada)) {
-                conteoVotos.put(opcionVotada, conteoVotos.get(opcionVotada) + 1);
-                System.out.println("\nVoto recibido para: " + opcionVotada);
-                mostrarResultados();
+        } else if (line.startsWith("VOTO:")) {
+            String voted_option = line.substring(5);
+            if (vote_count.containsKey(voted_option)) {
+                vote_count.put(voted_option, vote_count.get(voted_option) + 1);
+                System.out.println("\nVoto recibido para: " + voted_option);
+                showResults();
             }
         }
     }
 
-    @Override
-    public void viewAccepted(View view) {
-        System.out.println("Miembros del grupo: " + view.getMembers());
-    }
-
-    private void mostrarResultados() {
+    private void showResults() {
         System.out.println("--- Resultados actuales ---");
-        for (Map.Entry<String, Integer> entrada : conteoVotos.entrySet()) {
-            System.out.println("  " + entrada.getKey() + ": " + entrada.getValue() + " voto(s)");
+        for (Map.Entry<String, Integer> entry : vote_count.entrySet()) {
+            System.out.println("  " + entry.getKey() + ": " + entry.getValue() + " voto(s)");
         }
         System.out.println("---------------------------");
         System.out.print("> ");
+        System.out.flush();
     }
 
     public void start() throws Exception {
-        channel = new JChannel();
-        channel.setReceiver(this);
-        channel.connect("VotingCluster");
-        eventLoop();
-        channel.close();
+        // Crear el canal y conectar al grupo
+        channel = new JChannel();  // Utiliza UDP por defecto
+        channel.setReceiver(this); // El objeto que recibira los mensajes
+        channel.connect("VotingCluster");  // Conecta al grupo VotingCluster
+        channel.getState(null, 10000); // Opcional, para obtener estado compartido si lo hay
+        eventLoop(); // Comienza a leer y enviar mensajes
+        channel.close(); // Cierra el canal cuando se termine
     }
 
-    private void eventLoop() throws Exception {
+    private void eventLoop() {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Comandos disponibles:");
-        System.out.println("  'iniciar' proponer una nueva votacion");
-        System.out.println("  numero   votar por una opcion (cuando haya votacion activa)");
-        System.out.println("  'salir'  desconectarse");
-
+        System.out.println("Comandos: 'iniciar' (proponer), 'numero' (votar), 'quit' o 'exit' (salir)");
+        
         while (true) {
-            System.out.print("> ");
-            String linea = in.readLine();
-            if (linea == null || linea.equalsIgnoreCase("salir")) break;
-            linea = linea.trim();
-
-            if (linea.equalsIgnoreCase("iniciar")) {
-                System.out.print("Escribe la pregunta: ");
-                String pregunta = in.readLine();
-                System.out.print("Cuantas opciones? ");
-                int n = Integer.parseInt(in.readLine().trim());
-
-                StringBuilder sb = new StringBuilder("PREGUNTA:" + pregunta);
-                for (int i = 0; i < n; i++) {
-                    System.out.print("Opcion " + (i + 1) + ": ");
-                    sb.append("|").append(in.readLine());
+            try {
+                System.out.print("> ");
+                System.out.flush();
+                String line = in.readLine().toLowerCase();
+                
+                if (line.startsWith("quit") || line.startsWith("exit")) {
+                    break; // finaliza el bucle
                 }
 
-                Message msg = new Message(null, sb.toString()) {};
-                channel.send(msg);
-
-            } else if (preguntaActual != null && !yaVote) {
-                try {
-                    int idx = Integer.parseInt(linea) - 1;
-                    if (idx >= 0 && idx < opciones.size()) {
-                        String opcionElegida = opciones.get(idx);
-                        Message msg = new Message(null, "VOTO:" + opcionElegida) {};
-                        channel.send(msg);
-                        yaVote = true;
-                        System.out.println("Voto enviado: " + opcionElegida);
-                    } else {
-                        System.out.println("Numero fuera de rango. Opciones: 1 a " + opciones.size());
+                if (line.startsWith("iniciar")) {
+                    
+                    // Solo el primer nodo puede iniciar (Coordinador)
+                    boolean is_coordinator = channel.getView().getMembers().get(0).equals(channel.getAddress());
+                    if (!is_coordinator) {
+                        System.out.println("Solo el creador del grupo puede iniciar la votacion.");
+                        continue;
                     }
-                } catch (NumberFormatException e) {
-                    System.out.println("Escribe 'iniciar', un numero para votar, o 'salir'.");
+
+                    System.out.print("Escribe la pregunta: ");
+                    String question = in.readLine();
+                    System.out.print("Cuantas opciones? ");
+                    int n = Integer.parseInt(in.readLine().trim());
+
+                    StringBuilder sb = new StringBuilder("PREGUNTA:" + question);
+                    for (int i = 0; i < n; i++) {
+                        System.out.print("Opcion " + (i + 1) + ": ");
+                        sb.append("|").append(in.readLine());
+                    }
+
+                    Message msg = new Message(null, sb.toString()) {}; // crea mensaje
+                    channel.send(msg);  // envia al grupo
+
+                } else if (current_question != null && !has_voted) {
+                    int idx = Integer.parseInt(line) - 1;
+                    if (idx >= 0 && idx < options.size()) {
+                        String chosen_option = options.get(idx);
+                        Message msg = new Message(null, "VOTO:" + chosen_option) {}; // crea mensaje
+                        channel.send(msg);  // envia al grupo
+                        has_voted = true;
+                        System.out.println("Voto enviado: " + chosen_option);
+                    } else {
+                        System.out.println("Numero fuera de rango.");
+                    }
+                } else if (has_voted) {
+                    System.out.println("Ya votaste en esta ronda.");
+                } else {
+                    System.out.println("No hay votacion activa.");
                 }
-            } else if (yaVote) {
-                System.out.println("Ya votaste en esta ronda.");
-            } else {
-                System.out.println("No hay votacion activa. Escribe 'iniciar' para proponer una.");
+
+            } catch (Exception e) {
+                // El catch vacio para ignorar errores de formato tal como en SimpleChat
             }
         }
     }
