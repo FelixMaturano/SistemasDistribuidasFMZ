@@ -9,7 +9,7 @@ package com.sis258.sistemavotacionred;
  * @author Ruta Binar
  */
 
-public class Main {
+public class Main2 {
     public static void main(String[] args) {
         try {
             System.setProperty("java.net.preferIPv4Stack", "true");
