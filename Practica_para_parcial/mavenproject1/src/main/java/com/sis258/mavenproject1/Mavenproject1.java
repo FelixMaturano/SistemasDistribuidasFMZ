@@ -23,7 +23,7 @@ public class Mavenproject1 {
         try {
             // TODO code application logic here
             server = new ServerSocket(port);
-            System.out.println("Se inicio el servidor con éxito");
+            System.out.println("Se inicio el servidor con exito");
             Socket client;
             while (true) {
 
