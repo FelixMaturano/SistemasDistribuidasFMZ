@@ -4,10 +4,15 @@
  */
 package com.sis258.examenrmisockets;
 
+import java.rmi.Remote;  
+import java.rmi.RemoteException; 
+import java.util.ArrayList;   
 /**
  *
  * @author Ruta Binar
  */
-public interface IJusticia {
+public interface IJusticia extends Remote {
+    ArrayList<Cuenta> consultar(String ci) throws RemoteException;
+    boolean congelar(Cuenta c, double monto) throws RemoteException;
     
 }
