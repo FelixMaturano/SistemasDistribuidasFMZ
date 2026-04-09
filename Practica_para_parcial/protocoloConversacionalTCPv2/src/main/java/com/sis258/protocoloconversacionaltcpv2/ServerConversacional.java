@@ -15,10 +15,8 @@ import java.net.Socket;
  * @author Ruta Binar
  */
 public class ServerConversacional {
-
     public static void main(String[] args) {
         int port = 5003;
-
         try {
             ServerSocket server = new ServerSocket(port);
             System.out.println("Servidor conversacional iniciado...");
@@ -29,7 +27,6 @@ public class ServerConversacional {
                 BufferedReader fromClient = new BufferedReader(new InputStreamReader(client.getInputStream()));
                 // Envía datos al cliente
                 PrintStream toClient = new PrintStream(client.getOutputStream());
-
                 // bucle para entender conversacion con un mismo cliente
                 while (true) {
                     toClient.println("Ingrese numero 1:");
@@ -65,15 +62,12 @@ public class ServerConversacional {
                             continue;
                     }
                     toClient.println("Resultado: " + resultado);
-
                 }
                  client.close();  
                  System.out.println("Cliente desconectado");
-
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-
 }
