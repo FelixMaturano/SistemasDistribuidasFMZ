@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author PC
  */
 public class ServidorUnivirsitarios {
-    
- 
-    
+      public static void main(String[] args) {
+        
+    }
 }

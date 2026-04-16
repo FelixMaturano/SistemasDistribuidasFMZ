@@ -2,8 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package sistemabecas;
-
+package com.sis258.erpacialbecas;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,26 +18,27 @@ public class SegipTCP {
 
     public static void main(String[] args){
         int port = 5000;
-        ServerSocket server;
-        try {
-            server = new ServerSocket(port);
-            System.out.println("Servidor Segip TCP iniciado ......");
-            Socket client = server.accept(); //conexion entre cliente y servidor para comunicacion bidireccional
+        
+        try{
+            ServerSocket server = new ServerSocket(port);
+            System.out.println("Servidor Segip iniciado .....");
+            Socket client = server.accept();
             BufferedReader fromClient = new BufferedReader(new InputStreamReader(client.getInputStream())); // el lector
-             PrintStream toClient = new PrintStream(client.getOutputStream());
-            
+            PrintStream toClient = new PrintStream(client.getOutputStream());
             String recibido = fromClient.readLine();
-            System.out.println("Segip recibio consulta por ci: " + recibido);
+            System.out.println("Segip recibi: " + recibido);
             
-            if(recibido != null && recibido.equals("1234567")){
-                toClient.println("Usuario encontrado");
+            String[] cadena = recibido.split(":");
+            if(cadena[1].equals("1234567")){
+                toClient.println("Si existe " );
             }else{
-                toClient.println("no encontrado");
+                toClient.println("No existe");
             }
+            //toClient.println("ENVIADO DESDE EL SERVIDOR");
             client.close();
-                  
-        } catch (IOException ex) {
-            System.out.print(ex.getMessage());
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+                 
         }
     }
 }
