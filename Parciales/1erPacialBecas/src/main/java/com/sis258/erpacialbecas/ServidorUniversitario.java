@@ -36,7 +36,7 @@ public class ServidorUniversitario extends UnicastRemoteObject implements IBeca 
                 ArrayList<Nota> notas = new ArrayList<>();
 
                 notas.add(new Nota("SIS-258", 80));
-                notas.add(new Nota("SIS-350", 80));
+                notas.add(new Nota("SIS-350", 50));
                 double promdeio = calcularPromedio(notas);
                 for (Nota n : notas) {
                     double promedio = n.getCalificacion();

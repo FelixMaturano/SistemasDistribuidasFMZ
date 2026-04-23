@@ -1,0 +1,10 @@
+D:\2026\COM350\1-2026-COM350\Servicios_webs\ServicioCotizaciones\ClienteCotizaciones\bin\Debug\ClienteCotizaciones.exe.config
+D:\2026\COM350\1-2026-COM350\Servicios_webs\ServicioCotizaciones\ClienteCotizaciones\bin\Debug\ClienteCotizaciones.exe
+D:\2026\COM350\1-2026-COM350\Servicios_webs\ServicioCotizaciones\ClienteCotizaciones\bin\Debug\ClienteCotizaciones.pdb
+D:\2026\COM350\1-2026-COM350\Servicios_webs\ServicioCotizaciones\ClienteCotizaciones\obj\Debug\ClienteCotizaciones.csproj.AssemblyReference.cache
+D:\2026\COM350\1-2026-COM350\Servicios_webs\ServicioCotizaciones\ClienteCotizaciones\obj\Debug\ClienteCotizaciones.Form1.resources
+D:\2026\COM350\1-2026-COM350\Servicios_webs\ServicioCotizaciones\ClienteCotizaciones\obj\Debug\ClienteCotizaciones.Properties.Resources.resources
+D:\2026\COM350\1-2026-COM350\Servicios_webs\ServicioCotizaciones\ClienteCotizaciones\obj\Debug\ClienteCotizaciones.csproj.GenerateResource.cache
+D:\2026\COM350\1-2026-COM350\Servicios_webs\ServicioCotizaciones\ClienteCotizaciones\obj\Debug\ClienteCotizaciones.csproj.CoreCompileInputs.cache
+D:\2026\COM350\1-2026-COM350\Servicios_webs\ServicioCotizaciones\ClienteCotizaciones\obj\Debug\ClienteCotizaciones.exe
+D:\2026\COM350\1-2026-COM350\Servicios_webs\ServicioCotizaciones\ClienteCotizaciones\obj\Debug\ClienteCotizaciones.pdb
